@@ -1,0 +1,133 @@
+
+<!-- DEPENDENCIES -->
+
+<link rel="import" href="../../components/carousel/carousel.html">
+<link rel="import" href="../../app-components/credit-card.html" />
+<link rel="import" href="../../../bower_components/x-cabinet/x-cabinet.html" />
+
+<polymer-element name="account-manager" attributes="account">
+
+	<template>
+
+		<link rel="stylesheet" href="./account-manager.css" type="text/css"></link>
+
+		<section id="card-title">
+		
+			<x-carousel interval="{{rotateInterval}}" slide="{{delayedAccountCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
+
+				<!-- Repeate cards -->
+				<template repeat="{{accnt in account}}">
+
+					<x-carousel-item transitionType="fade" direction="{{direction}}">
+
+						<h3>{{accnt.brand}}</h3>
+
+					</x-carousel-item>
+
+				</template>
+
+			</x-carousel>
+			
+
+		</section>
+
+		<section id="card-carousel">
+
+			<!-- carousel -->
+			<x-carousel interval="{{rotateInterval}}" slide="{{cardCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
+
+				<!-- Repeate cards -->
+				<template repeat="{{card in account}}">
+
+					<x-carousel-item transitionType="slide-left" direction="{{direction}}">
+						<credit-card class="{{card.brand}}-credit-card" autowireFlipEvents="false">
+							<cfront class="card">
+								{{card.brand}}
+								{{card.number}}
+							</cfront>
+							<cback class="card">
+								back of card
+							</cback>
+						</credit-card>	
+
+					</x-carousel-item>
+
+				</template>
+
+			</x-carousel>
+
+		</section>
+
+		<section id="card-details">
+		
+			<x-carousel interval="{{rotateInterval}}" slide="{{delayedAccountCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
+
+				<!-- Repeate cards -->
+				<template repeat="{{accnt in account}}"> 
+
+					<x-carousel-item transitionType="fade" direction="{{direction}}">
+
+						<x-cabinet orientation="down" isOpen clickable="false">
+
+							<x-cabinet-drawer>
+								<small>${{accnt.creditLimit | currency}} Credi Limit</small>
+								<br><br>
+								<small>Available Balance</small>
+								<h2>${{accnt.availBalance | currency}}</h2>
+								<br>
+								<small>Next Minimum Payment</small>
+								<h2>${{accnt.nextPayment | currency}}</h2> 
+							</x-cabinet-drawer>
+
+							<x-cabinet-drawer>
+								
+								<div horizontal layout>
+								  	<button flex>Transfer / Pay</button>
+									<button flex>Request Money</button>
+								</div>
+
+								<div horizontal layout>
+									<button flex>View Transaction History</button>
+								</div>
+
+							</x-cabinet-drawer>
+
+							<x-cabinet-drawer>
+								darw 3
+							</x-cabinet-drawer>
+
+						 </x-cabinet>				
+
+					</x-carousel-item>
+
+				</template>
+
+			</x-carousel>
+			
+
+		</section>
+
+		<section id="transaction-details">
+
+			<x-carousel interval="{{rotateInterval}}" slide="{{accountDetailCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
+
+				<!-- Repeate cards -->
+				<template repeat="{{accnt in account}}">
+
+					<x-carousel-item transitionType="slide-left" direction="{{direction}}">
+
+						drag me
+
+					</x-carousel-item>
+
+				</template>
+
+			</x-carousel>
+
+		</section>
+
+	</template>
+
+	<script src="./account-manager.js"></script>
+
+</polymer-element>

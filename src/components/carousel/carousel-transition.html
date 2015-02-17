@@ -1,0 +1,277 @@
+
+<link href="../../../bower_components/core-transition/core-transition.html" rel="import">
+
+<polymer-element name="carousel-transition" extends="core-transition" attributes="transitionType">
+	<template>
+		<link no-shim rel="stylesheet" href="carousel-transition.css">
+	</template>
+
+	<script>
+
+		(function(){
+
+			/*
+				STATIC (shared) FUNCTIONS & VALUES
+			*/
+
+			var transitionEndEventName = function () {
+				var i,
+					undefined,
+					el = document.createElement('div'),
+					transitions = {
+						'transition':'transitionend',
+						'OTransition':'otransitionend',  // oTransitionEnd in very old Opera
+						'MozTransition':'transitionend',
+						'WebkitTransition':'webkitTransitionEnd'
+					};
+
+				for (i in transitions) {
+					if (transitions.hasOwnProperty(i) && el.style[i] !== undefined) {
+						return transitions[i];
+					}
+				}
+
+				//TODO: throw 'TransitionEnd event is not supported in this browser'; 
+			},
+
+			TRANSITION_CLASS = {
+				BASE: 		'carousel',
+				T: 			'transition',
+				ENTER: 		'enter',
+				LEAVE: 		'leave',
+				SETUP: 		'setup', 
+				ACTIVE:		'active', 
+				FINAL: 		'final'
+			},
+
+			transitionClass = function() {
+				return [
+					TRANSITION_CLASS.BASE,
+					TRANSITION_CLASS.T,
+				].join('-');
+			},
+			enterSetupClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.ENTER,
+					TRANSITION_CLASS.SETUP
+				].join('-');
+			},
+			enterActiveClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.ENTER,
+					TRANSITION_CLASS.ACTIVE
+				].join('-');
+			},
+			enterFinalClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.ENTER,
+					TRANSITION_CLASS.FINAL
+				].join('-');
+			},
+			leaveSetupClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.LEAVE,
+					TRANSITION_CLASS.SETUP
+				].join('-');
+			},
+			leaveActiveClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.LEAVE,
+					TRANSITION_CLASS.ACTIVE
+				].join('-');
+			},
+			leaveFinalClass = function(transitionType) {
+				return [
+					TRANSITION_CLASS.BASE,
+					transitionType,
+					TRANSITION_CLASS.T,
+					TRANSITION_CLASS.LEAVE,
+					TRANSITION_CLASS.FINAL
+				].join('-');
+			}
+
+			/*
+				INSTANCE FUNCTIONS & VALUES
+			*/
+			
+			Polymer('carousel-transition', { 
+
+				publish: {
+					transitionType: null
+				},
+
+				registerCallback: function(element) {
+					// grab styles from template
+					this._transitionStyle = element.templateContent().firstElementChild;
+				},
+
+				// template is just for loading styles, we don't need a shadowRoot
+				fetchTemplate: function() {
+					return null;
+				},
+
+				ready: function(){
+
+					// make sure to run the rady method in supre
+					// the the meta element will not be registered
+					this.super();
+
+					// buld trasistion classes
+					var t = this.transitionType;
+					this._CLASSES = {
+						BASE:			transitionClass(),
+						ENTER:			enterSetupClass(t),
+						LEAVE:			leaveSetupClass(t),
+						ENTER_ACTIVE:	enterActiveClass(t),
+						LEAVE_ACTIVE:	leaveActiveClass(t),
+						ENTER_END:		enterFinalClass(t),
+						LEAVE_END:		leaveFinalClass(t)
+					};
+
+					this._completeEventName = transitionEndEventName();
+
+				},
+
+				/**
+				* Run the animation.
+				*
+				* @method go
+				* @param {Node} node The node to apply the animation on
+				* @param {Object} state State info
+				*/
+				go: function(node, state, modifier, doneCallback) {
+
+					node.classList.add(this._CLASSES.BASE);
+					node.classList.remove(this._CLASSES.LEAVE_END);
+					node.classList.remove(this._CLASSES.ENTER_END);
+
+					var _self = this;
+					switch(state){
+						case 'enter': 
+
+							node.classList.add(this._CLASSES.ENTER);
+
+							// give time for classes to apply to DOM 
+							// before adding end state for transition
+							this.async(function() {
+								node.classList.add(this._CLASSES.ENTER_ACTIVE);
+							}, null, 1);
+							
+							this.listenOnce(node, this._completeEventName, function(e){ 
+								
+								node.classList.remove(_self._CLASSES.ENTER_ACTIVE);
+								node.classList.switch(
+									_self._CLASSES.ENTER,
+									_self._CLASSES.ENTER_END
+								);
+
+								doneCallback && doneCallback(node);
+
+								_self.complete.call(_self, node, state);
+
+							});
+							break;
+
+						case 'leave': 
+					
+							node.classList.add(this._CLASSES.LEAVE);
+
+							// give time for classes to apply to DOM 
+							// before adding end state for transition
+							this.async(function() {
+								node.classList.add(this._CLASSES.LEAVE_ACTIVE);
+							}, null, 1);
+
+							this.listenOnce(node, this._completeEventName, function(e){ 
+
+								node.classList.remove(_self._CLASSES.LEAVE_ACTIVE);
+								node.classList.switch(
+									_self._CLASSES.LEAVE, 
+									_self._CLASSES.LEAVE_END
+								);
+
+								doneCallback && doneCallback(node);
+
+								_self.complete.call(_self, node, state);
+
+							});
+							break;
+
+					}
+
+				},
+				/**
+				* Set up the animation. This may include injecting a stylesheet,
+				* applying styles, creating a web animations object, etc.. This
+				*
+				* @method setup
+				* @param {Node} node The animated node
+				*/
+				setup: function(node) {
+					//node.classList.add(this._CLASSES.BASE);
+					//node.classList.add(this._CLASSES.LEAVE); 
+					node.classList.add(this._CLASSES.LEAVE_END); 
+
+					if (!node._hasTransitionStyle) {
+						if (!node.shadowRoot) {
+							node.createShadowRoot().innerHTML = '<content></content>';
+						}
+						// write the transition styles to the nodes shadowRoot
+						this.installScopeStyle(this._transitionStyle, 'transition', node.shadowRoot);
+						node._hasTransitionStyle = true;
+					}
+				},
+
+				/**
+				* Tear down the animation.
+				*
+				* @method teardown
+				* @param {Node} node The animated node
+				*/
+				teardown: function(node) {
+					node.classList.add(this._CLASSES.BASE);
+					node.classList.remove(this._CLASSES.ENTER);
+					node.classList.remove(this._CLASSES.LEAVE);
+					node.classList.remove(this._CLASSES.ENTER_END);
+					node.classList.remove(this._CLASSES.LEAVE_END);
+
+					node.removeEventListener(transitionEndEventName());
+				},
+				/**
+				* Called when the animation completes. This function also fires the
+				* `carousel-item-transitionend` event.
+				*
+				* @method complete
+				* @param {Node} node The animated node
+				*/
+				complete: function(node, state) {
+
+					//console.log('complete:', state);
+
+					node.classList.remove(this._CLASSES.BASE);
+					this.fire('carousel-item-transitionend', { type: this.transitionType, node: node, state: state }, node);
+				}
+			});
+
+		})()
+	</script>
+</polymer-element>
+
+<carousel-transition id="carousel-slide-right-transition" transitionType="slide-right"></carousel-transition>
+<carousel-transition id="carousel-slide-left-transition" transitionType="slide-left"></carousel-transition>
+<carousel-transition id="carousel-fade-transition" transitionType="fade"></carousel-transition>

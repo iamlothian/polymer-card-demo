@@ -1,0 +1,30 @@
+{
+  "name": "bankingapp",
+  "version": "0.0.0",
+  "authors": [
+    "matthew lothian (@iamlothian)"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.2",
+    "core-pages": "Polymer/core-pages#~0.5.2",
+    "core-scaffold": "Polymer/core-scaffold#~0.5.2",
+    "core-icon": "Polymer/core-icon#~0.5.2",
+    "core-input": "Polymer/core-input#~0.5.2",
+    "polymer-simple-slider": "https://github.com/ruyadorno/polymer-simple-slider.git#~0.1.5",
+    "core-transition": "Polymer/core-transition#~0.5.2",
+    "x-cabinet": "https://github.com/iamlothian/x-cabinet.git"
+  },
+  "resolutions": {
+    "core-component-page": "^0.5.0",
+    "polymer": "^0.5.0"
+  }
+}

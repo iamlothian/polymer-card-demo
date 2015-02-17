@@ -1,0 +1,42 @@
+<polymer-element name="fix-aspect-ratio">
+	<template>
+		<style>
+
+			:host {
+			    display: inline-block;
+			    position: relative;
+			    width: 100%;
+			}
+			:host > div {
+			    position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			}
+
+		</style>
+
+		<div>
+	        <content></contect>      
+		</div>
+
+	</template>
+	<script>
+		Polymer('fix-aspect-ratio', {
+
+			publish: {
+				ratioW: { value: 1, reflect: true },
+				ratioH: { value: 1 , reflect: true }
+			},
+
+			ratioHChanged: function(oldVal, newVal){
+				var height = 100 / this.ratioW * this.ratioH;
+				this.style.paddingBottom =  height + '%';
+
+				console.log(height);
+			}
+
+		})
+	</script>
+</polymer-element>

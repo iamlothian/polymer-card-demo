@@ -1,0 +1,15 @@
+{
+  "name": "bankapp",
+  "version": "0.0.1",
+  "description": "polymer prototype app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "matthew lothian (@iamlothian)",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-vulcanize": "^0.6.1"
+  }
+}

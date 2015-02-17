@@ -1,0 +1,88 @@
+<polymer-element name="x-carousel-item" attributes="active transitionType direction">
+	
+	<link href="./carousel-transition.html" rel="import">
+	<link href="../../../bower_components/core-meta/core-meta.html" rel="import">
+
+	<template>		
+
+		<style>
+
+			:host {
+				position: absolute;
+				display: block;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				z-index: 0;
+			}
+			:host([active]){
+				position: relative;
+				z-index: 2;
+			}
+
+		</style>
+
+		<content></content>
+
+	</template>
+	
+	<script>
+		Polymer('x-carousel-item', {
+
+			publish : {
+				isHidden: { value: false, reflect: true },
+				isNext: { value: false, reflect: true },
+				isPrev: { value: false, reflect: true },
+				active: { value: false, reflect: true },
+				direction: { value: 'forward', reflect: true },
+				transitionType: 'fade'
+			},
+
+			_meta: undefined,
+			_slideTransition: undefined,
+
+			ready: function(){
+
+				var _self = this;
+
+				// Get the meta db with the transition in it
+				_self._meta = document.createElement('core-meta'); 
+				_self._meta.type = 'transition';
+
+				var transistionId = 'carousel-' + this.transitionType + '-transition';
+				_self._slideTransition = _self._meta.byId(transistionId);
+
+				if (_self._slideTransition){
+					_self._slideTransition.setup(_self);
+				} else {
+					console.error('ERROR: <x-carousel-item>: transitionType="' + this.transitionType + '" ['+transistionId+'] was not found, no transition will be used');
+				}
+
+			},
+
+			directionChanged: function(oldVal, newVal){
+				/*
+				var transistionId = 'carousel-' + this.transitionType + '-transition';
+				this._slideTransition = this._meta.byId(transistionId);
+				*/
+			},
+
+			enter: function(modifier, callbcak){
+				this.active = true;
+				this._slideTransition && this._slideTransition.go(this, 'enter', modifier, function(node){
+					callbcak && callbcak(node);
+				});
+			},
+
+			leave: function(modifier, callbcak){
+				this.active = false;
+				this._slideTransition && this._slideTransition.go(this, 'leave', modifier, function(node){
+					callbcak && callbcak(node);
+				});	
+			}
+
+		});
+	</script>
+
+</polymer-element>

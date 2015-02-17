@@ -1,0 +1,97 @@
+/*************** 
+ * SLIDE LEFT / RIGHT (forward / back)
+ ***************/
+
+:host(.carousel-transition.carousel-slide-right-transition-enter-active), 
+:host(.carousel-transition.carousel-slide-right-transition-leave-active),
+:host(.carousel-slide-right-transition-leave-final[isnext][isprev]),
+
+:host(.carousel-transition.carousel-slide-left-transition-enter-active), 
+:host(.carousel-transition.carousel-slide-left-transition-leave-active),
+:host(.carousel-slide-left-transition-leave-final[isnext][isprev]) {
+	transition: all 0.3s ease-in-out;
+	transition-property: opacity, transform;
+	transform-style: preserve-3d;
+}
+
+/* -> right */
+:host([direction="forward"].carousel-slide-right-transition-leave-active),
+:host([direction="forward"].carousel-slide-right-transition-leave-final[isprev]),
+:host([direction="back"].carousel-slide-right-transition-enter-setup),
+:host([direction="back"].carousel-slide-right-transition-leave-final[isnext]),
+
+:host([direction="back"].carousel-slide-left-transition-leave-active),
+:host([direction="back"].carousel-slide-left-transition-leave-final[isprev]),
+:host([direction="forward"].carousel-slide-left-transition-enter-setup),
+:host([direction="forward"].carousel-slide-left-transition-leave-final[isnext]) {
+	transform: translateX(100%) scale(0.85) rotateY(25deg);
+	-webkit-transform: translateX(100%) scale(0.85) rotateY(25deg);
+	opacity: 0.8;
+}
+
+/* -|- center */
+:host([direction].carousel-slide-right-transition-leave-setup[active]),
+:host([direction].carousel-slide-right-transition-enter-active[active]),
+:host([direction].carousel-slide-right-transition-enter-final[active]),
+
+:host([direction].carousel-slide-left-transition-leave-setup[active]),
+:host([direction].carousel-slide-left-transition-enter-active[active]),
+:host([direction].carousel-slide-left-transition-enter-final[active]) {
+	transform: translateX(0%) scale(1) rotateY(0deg);
+	-webkit-transform: translateX(0%) scale(1) rotateY(0deg);
+	opacity: 1;
+}
+
+/* <- left */
+:host([direction="forward"].carousel-slide-right-transition-enter-setup),
+:host([direction="forward"].carousel-slide-right-transition-leave-final[isnext]),
+:host([direction="back"].carousel-slide-right-transition-leave-active),
+:host([direction="back"].carousel-slide-right-transition-leave-final[isprev]),
+
+:host([direction="back"].carousel-slide-left-transition-enter-setup),
+:host([direction="back"].carousel-slide-left-transition-leave-final[isnext]),
+:host([direction="forward"].carousel-slide-left-transition-leave-active),
+:host([direction="forward"].carousel-slide-left-transition-leave-final[isprev]) {
+	transform: translateX(-100%) scale(0.85) rotateY(-25deg);
+	-webkit-transform: translateX(-100%) scale(0.85) rotateY(-25deg);
+	opacity: 0.8;
+}
+/* left -> offscreen */
+:host([direction="forward"].carousel-slide-right-transition-leave-final[isnext][isprev]),
+:host([direction="back"].carousel-slide-left-transition-leave-final[isnext][isprev]) {
+	transform: translateX(200%);
+	-webkit-transform: translateX(200%);
+}
+/* right -> offscreen */
+:host([direction="back"].carousel-slide-right-transition-leave-final[isnext][isprev]), 
+:host([direction="forward"].carousel-slide-left-transition-leave-final[isnext][isprev]) {
+	transform: translateX(-200%);
+	-webkit-transform: translateX(-200%);
+}
+:host([direction].carousel-slide-left-transition-leave-final[ishidden]){
+	opacity: 0;
+}
+
+
+/*************** 
+ * FADE
+ ***************/
+
+:host(.carousel-transition.carousel-fade-transition-enter-active), 
+:host(.carousel-transition.carousel-fade-transition-leave-active) {
+	transition: opacity 0.5s ease-in-out;
+}
+
+:host([direction].carousel-fade-transition-enter-setup),
+:host([direction].carousel-fade-transition-leave-final[isnext]) {
+	opacity: 0;
+}
+:host([direction].carousel-fade-transition-leave-setup[active]),
+:host([direction].carousel-fade-transition-enter-active[active]),
+:host([direction].carousel-fade-transition-enter-final[active]) {
+	opacity: 1;
+}
+:host([direction].carousel-fade-transition-leave-active),
+:host([direction].carousel-fade-transition-leave-final[isprev]) {
+	opacity: 0;
+}

@@ -1,0 +1,42 @@
+{
+  "name": "polymer-simple-slider",
+  "version": "0.1.5",
+  "authors": [
+    "Ruy Adorno"
+  ],
+  "description": "A Polymer element providing a simple slider functionality",
+  "main": "dist/polymer-simple-slider.js",
+  "keywords": [
+    "slider",
+    "simple",
+    "gallery",
+    "carousel",
+    "polymer",
+    "images"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "platform": "Polymer/platform#~0.2.0",
+    "polymer": "Polymer/polymer#~0.2.0",
+    "SimpleSlider": ">=0.3.0"
+  },
+  "devDependencies": {},
+  "homepage": "https://github.com/ruyadorno/polymer-simple-slider",
+  "_release": "0.1.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.5",
+    "commit": "3d1436944b6aff96481f407ddd544147a1e7d053"
+  },
+  "_source": "https://github.com/ruyadorno/polymer-simple-slider.git",
+  "_target": "~0.1.5",
+  "_originalSource": "https://github.com/ruyadorno/polymer-simple-slider.git",
+  "_direct": true
+}

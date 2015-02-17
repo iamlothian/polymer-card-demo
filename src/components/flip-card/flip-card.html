@@ -1,0 +1,66 @@
+<!--
+Flip Card provides drop-in support for CSS 3D cards that flip over. Your browser
+must support CSS 3D Transforms in order for it to work properly. Useful for
+bios, service listings, and other situations where you might want to rely on
+user interest/interaction before showing more content.
+#### Example
+		<flip-card axis="x">
+			<front>Front of card</front>
+			<back>Back of card</back>
+		</flip-card>
+#### Options
+An `axis` attribute can be added directly to the `<flip-card>` element. At this
+time there are only two options:
+* `y` axis is default. It's what you typically see. The card flips left to right.
+* `x` axis means it turns upside-down while it flips.
+@element flip-card
+@blurb Provides a two-sided card that flips over in 3D space.
+@status alpha
+@homepage http://rupl.github.io/flip-card
+-->
+<polymer-element name="flip-card" attributes="flipped autowire-events">
+
+	<template>
+		<link rel="stylesheet" href="flip-card.css"> 
+		<content id="front" select="front"></content>
+		<content id="back" select="back"></content>
+	</template>
+
+	<script>
+
+		Polymer('flip-card', {
+
+			publish: {
+				flipped: { value: false, reflect: true },
+				'autowire-events': { value: true, reflect: true }
+			},
+
+			domReady: function(){
+
+				var _self = this;
+
+				function flipHandler(event, detail, sender){
+					_self.toggleFlip.call(_self, event, detail, sender);
+				}
+
+				if(!!this['autowire-events']){
+					this.$.front.addEventListener('click', flipHandler);
+					this.$.back.addEventListener('click', flipHandler);
+				}
+
+			},
+
+			detached: function() {  
+				this.$.front.removeEventListener();
+				this.$.back.removeEventListener()
+			},
+
+			toggleFlip: function(event, detail, sender) { 
+				this.flipped = !this.flipped;
+			}
+
+		});
+
+	</script>
+
+</polymer-element>
