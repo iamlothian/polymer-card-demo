@@ -31,16 +31,16 @@
 }
 
 :host credit-card.Visa-credit-card cfront.card {
-	background-image: url(/assets/White%20Card.png);
+	background-image: url(../../../assets/White%20Card.png);
 }
 :host credit-card.Mastercard-credit-card cfront.card {
-	background-image: url(/assets/Black%20Card.png);
+	background-image: url(../../../assets/Black%20Card.png);
 }
 :host credit-card.American-Express-credit-card cfront.card {
-	background-image: url(/assets/Blue%20Card.png);
+	background-image: url(../../../assets/Blue%20Card.png);
 }
 :host credit-card.Other-Card-credit-card cfront.card {
-	background-image: url(/assets/Red%20Card.png);
+	background-image: url(../../../assets/Red%20Card.png);
 }
 
 :host section#card-title {
