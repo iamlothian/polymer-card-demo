@@ -76,20 +76,37 @@
 	display: none;
 }
 
-:host section#transaction-details {
+:host x-cabinet#transaction-details {
 	width: 100%;
-	height: 25%;
 	position: absolute;
 	bottom: 0px;
-	background-color: #FFF;
-	padding: 15px;
-	box-sizing: border-box;
 
-	transition: all 0.3s ease-in-out 0.1s;
-	transition-property: height, box-shadow;
+	height: 50%;
 }
 
-:host section#transaction-details.maximise {
-	height: 50%;
-	box-shadow: 0 0px 10px 0px rgba(0,0,0,0.5);
+:host x-cabinet#transaction-details x-cabinet-drawer {
+	background-color: #FFF;
+	transform: translate(0,50%);
+	-webkit-transform: translate(0,50%);
+}
+
+:host x-cabinet#transaction-details[isOpen] x-cabinet-drawer {
+	transform: translate(0,0%);
+	-webkit-transform: translate(0,0%);
+}
+
+:host x-cabinet#transaction-details table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+:host x-cabinet#transaction-details tr:nth-child(odd) {
+	background-color: #eee;
+}
+
+:host x-cabinet#transaction-details tr > td {
+	padding:10px;
+}
+:host x-cabinet#transaction-details tr > td:last-child {
+	text-align: right
 }

@@ -34,8 +34,8 @@
 
 			this.cardDetails = this.shadowRoot.querySelector('#card-details');
 
-			this.transactionDetails = this.shadowRoot.querySelector('#transaction-details');
-			this.transactionCarousel = this.shadowRoot.querySelector('#transaction-details > x-carousel');
+			this.transactionCabinet= this.shadowRoot.querySelector('#transaction-details');
+			this.transactionCarousel = this.shadowRoot.querySelector('#transaction-details x-carousel');
 
 			// add event listeners for PolymerGestures
 			events.forEach(function(en) {
@@ -44,13 +44,15 @@
 				});
 			});
 
-			events.forEach(function(en) {
-				PolymerGestures.addEventListener(_self.transactionDetails, en, function(ev) {
-					_self.handletransactionDetailsGesture.call(_self, ev);
-				});
+			_self.addEventListener('carousel-item-transitionend', _self.carouselItemTransitionend, false);
+
+			this.transactionCabinet.addEventListener('x-cabinet-drawer-opened', function(ev) {
+				_self.maximiseTransactions.call(_self, ev);
 			});
 
-			_self.addEventListener('carousel-item-transitionend', _self.carouselItemTransitionend, false);
+			this.transactionCabinet.addEventListener('x-cabinet-drawer-closed', function(ev) {
+				_self.minimiseTransactions.call(_self, ev);
+			});
 
 		},
 
@@ -85,6 +87,7 @@
 						var cabinet  =	this.cardDetails.querySelectorAll('x-cabinet')[this.accountDetailCarouselIdx];
 
 						cabinet.selected = flipcard.flipped ? 0 : 1;
+						cabinet.isOpen = true;
 
 						flipcard.toggleFlip(ev);
 
@@ -120,30 +123,6 @@
 
 		},
 
-		handletransactionDetailsGesture: function(ev) {
-
-			//console.log(ev.type);
-			switch(ev.type) {
-				case 'trackend':
-
-					if (Math.abs(ev.dx) > Math.abs(ev.dy)){
-						console.log((ev.dx < 0 ? "LEFT" : "RIGHT") + ' : ' + Math.abs(ev.dx));
-					} else {
-						console.log((ev.dy < 0 ? "UP" : "DOWN") + ' : ' + Math.abs(ev.dy));
-						ev.dy < 0 ? 
-							this.maximiseTransactions():
-							this.minimiseTransactions();
-
-					}
-
-					ev.preventTap();
-
-					break;
-				
-			}
-
-		},
-
 		next: function(){
 			this.cardCarousel.next();
 			this.transactionCarousel.next();
@@ -155,7 +134,6 @@
 
 		maximiseTransactions: function(){
 			this.cardCarouselContainer.classList.add('docToTop');
-			this.transactionDetails.classList.add('maximise');
 
 			var cabinet = this.cardDetails.querySelectorAll('x-cabinet')[this.accountDetailCarouselIdx];
 			cabinet.selected = 2;
@@ -163,7 +141,6 @@
 		},
 		minimiseTransactions: function(){
 			this.cardCarouselContainer.classList.remove('docToTop');
-			this.transactionDetails.classList.remove('maximise');
 
 			var cabinet = this.cardDetails.querySelectorAll('x-cabinet')[this.accountDetailCarouselIdx];
 			cabinet.selected = 0;
