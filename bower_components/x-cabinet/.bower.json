@@ -25,11 +25,11 @@
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.5"
   },
-  "_release": "9fd450bbcb",
+  "_release": "09c4af70e8",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "9fd450bbcb6d7e0c542f7b8ceb1bdbc564896389"
+    "commit": "09c4af70e873840f584d7448aea7e0abacc1e3d7"
   },
   "_source": "https://github.com/iamlothian/x-cabinet.git",
   "_target": "*",

@@ -81,6 +81,9 @@
 
 							<x-cabinet-drawer>
 								
+								<small>Available Balance</small>
+								<h2>${{accnt.availBalance | currency}}</h2>
+
 								<div horizontal layout>
 								  	<button flex>Transfer / Pay</button>
 									<button flex>Request Money</button>
@@ -92,8 +95,15 @@
 
 							</x-cabinet-drawer>
 
-							<x-cabinet-drawer>
-								darw 3
+							<x-cabinet-drawer> 
+								
+								<small>Available Balance</small>
+								<h2>${{accnt.availBalance | currency}}</h2>
+
+								<div horizontal layout>
+									<input placeholder="search hystory" flex/>
+								</div>
+
 							</x-cabinet-drawer>
 
 						 </x-cabinet>				
@@ -107,24 +117,41 @@
 
 		</section>
 
-		<section id="transaction-details">
+		<x-cabinet orientation="up" draggable qhost closeLimit="50" id="transaction-details">
 
-			<x-carousel interval="{{rotateInterval}}" slide="{{accountDetailCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
+			<x-cabinet-drawer>
 
-				<!-- Repeate cards -->
-				<template repeat="{{accnt in account}}">
+				<x-carousel interval="{{rotateInterval}}" slide="{{accountDetailCarouselIdx}}" direction="{{direction}}" infinate="false" overflow="visible">
 
-					<x-carousel-item transitionType="slide-left" direction="{{direction}}">
+					<!-- Repeate cards -->
+					<template repeat="{{accnt in account}}">
 
-						drag me
+						<x-carousel-item transitionType="slide-left" direction="{{direction}}">
 
-					</x-carousel-item>
+							<table>
 
-				</template>
+								<!-- Repeate transactions -->
+								<template repeat="{{trans in accnt.transactions}}"> 
 
-			</x-carousel>
+									<tr>
+										<td>{{trans.date | moment('format', 'DD/MM/YY') }}</td>
+										<td>{{trans.message}}</td>
+										<td>{{trans.ammount}}</td>
+									</tr>
 
-		</section>
+								</template>
+
+							</table>
+
+						</x-carousel-item>
+
+					</template>
+
+				</x-carousel>
+
+			</x-cabinet-drawer>
+
+		</x-cabinet>
 
 	</template>
 

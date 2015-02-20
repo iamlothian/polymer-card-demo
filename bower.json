@@ -21,7 +21,9 @@
     "core-input": "Polymer/core-input#~0.5.2",
     "polymer-simple-slider": "https://github.com/ruyadorno/polymer-simple-slider.git#~0.1.5",
     "core-transition": "Polymer/core-transition#~0.5.2",
-    "x-cabinet": "https://github.com/iamlothian/x-cabinet.git"
+    "x-cabinet": "https://github.com/iamlothian/x-cabinet.git",
+    "moment": "~2.9.0",
+    "polymer-filters": "~0.2.1"
   },
   "resolutions": {
     "core-component-page": "^0.5.0",
